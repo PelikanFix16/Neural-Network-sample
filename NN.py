@@ -25,7 +25,7 @@ class NN():
         return (outl2)*(1-(outl2))
 
     def dir_errorl2(self):
-        temp = np.empty((2,4))
+        temp = np.empty((len(self.x),4))
         for i in range(len(self.l1)):
             a= (self.dir_sigmoid(self.l2[i])*self.l1[i]*self.dir_error(self.y[i],self.l2[i]))
             temp[i] = a
@@ -37,7 +37,7 @@ class NN():
             for j in range(len(self.syn1)):
                 self.syn1[j] = (self.syn1[j])-((0.5)*(self.errorDirL2[i][j]))
     def dir_errorl1(self):
-        temp = np.empty((2,3,4))
+        temp = np.empty((len(self.x),3,4))
         for i in range(len(self.x)):
             for j in range(len(self.x[i])):
                 i1 = self.x[i][j]
@@ -67,25 +67,30 @@ np.random.seed(1)
 nn = NN(
     np.array(
         [[1,0,1],
-         [1,1,0]]
+         [1,1,0],
+         [0,1,1],
+         [0,1,0],
+         [0,0,1]
+
+         ]
              ),np.array(
                  [[1],
-                  [1]]
+                  [1],
+                  [0],
+                  [0],
+                  [0]
+                  ]
              ))
-print "Nauka zacznie sie za: "
 
-for j in range(10):
 
-    print j
-    time.sleep(1)
 
-print "Starting..."
-time.sleep(5)
+
+
+
+
 
 for i in range(60000):
     nn.forward()
-    print  "F1:",nn.errorOut[0]
-    print "F2:",nn.errorOut[1]
     nn.minimalize_weightL1()
     nn.minimalize_weightL2()
     print "Learn Generation:",i
@@ -98,5 +103,12 @@ print "Dane do nauki: ",nn.x," wyniki dla tych danych: ",nn.y
 nn.forward()
 print "Siec neuronowa po nauce: ",nn.x,"zwaraca wyniki: "
 print nn.l2
+
+print "Wrzucam do sieci [1,0,0] oczekiwany wynik to 1"
+
+nn.x = np.array([[1,0,0]])
+nn.forward()
+print nn.l2
+
 
 
